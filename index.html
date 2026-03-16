@@ -1,40 +1,50 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Watt Clicker</title>
-    <link rel="stylesheet" href="style.css">
+
+<title>Watt Clicker</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
-<h1> Watt Clicker</h1>
+<h1>Watt Clicker</h1>
 
 <div id="stats">
-    <p>Combat Points: <span id="cp">0</span></p>
-    <p>CP per second: <span id="cps">0</span></p>
+
+<p>Stored CP: <span id="cp">0 MB</span></p>
+<p>Storage: <span id="storage">0 / 1 GB</span></p>
+<p>Money: $<span id="money">0</span></p>
+
 </div>
 
 <button id="clickButton">Generate CP</button>
 
-<h2>Sell to Buyers</h2>
-<button onclick="sellCP()">Sell All CP</button>
-<p>Money: $<span id="money">0</span></p>
+<hr>
 
-<h2>Home Depot Upgrades</h2>
+<button onclick="openCPBook()">Open CPBook</button>
+<button onclick="openDepot()">Open Home Depot</button>
 
-<button onclick="buyUpgrade('drill')">
-Buy Power Drill ($25)
-</button>
+<div id="cpbookApp" class="app hidden">
+<h2>CPBook</h2>
+<div id="buyers"></div>
+<button onclick="closeCPBook()">Exit</button>
+</div>
 
-<button onclick="buyUpgrade('generator')">
-Buy Generator ($100)
-</button>
+<div id="depotApp" class="app hidden">
+    <h2 style="color:#ff6600">Home Depot</h2>
+    <div id="upgradeList"></div>
+    <button onclick="closeDepot()" style="background:#ff6600;color:white;padding:10px;margin-top:10px;">Exit Home Depot</button>
+</div>
 
-<button onclick="buyUpgrade('contractor')">
-Hire Contractor ($500)
-</button>
-
-<script src="game.js"></script>
+<script src="js/game.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/buyers.js"></script>
+<script src="js/cpbook.js"></script>
+<script src="js/homedepot.js"></script>
 
 </body>
 </html>

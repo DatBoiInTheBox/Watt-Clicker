@@ -1,17 +1,86 @@
 body{
-    font-family: Arial;
-    text-align: center;
-    background:#111;
-    color:white;
+
+font-family:Arial;
+text-align:center;
+background:#111;
+color:white;
+
 }
 
 button{
-    padding:10px;
-    margin:8px;
-    font-size:16px;
+
+padding:10px;
+margin:5px;
+
 }
 
-#clickButton{
-    font-size:22px;
+.app {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f0f2f5; /* default, overwritten by depotApp orange */
+    color: black;
+    padding: 20px;
+    text-align: center;
+
+    /* MAKE IT SCROLLABLE */
+    overflow-y: auto;   /* vertical scroll if content too tall */
+    box-sizing: border-box;
+}
+
+
+
+.hidden{
+
+display:none;
+
+}
+
+.buyer-card{
+    background:white;
+    color:black;
+    padding:10px;
+    margin:10px auto;
+    width:300px;
+    border-radius:8px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.2);
+    text-align:left;
+}
+.buyer-card button{
+    background:#1877f2;
+    color:white;
+    border:none;
+    padding:5px 10px;
+    cursor:pointer;
+    border-radius:4px;
+}
+
+/* Home Depot style */
+#depotApp{
+    background:#ff6600; /* Home Depot orange */
+    color:white;
     padding:20px;
+    text-align:center;
+}
+
+.upgrade-card{
+    background:white;
+    color:black;
+    padding:10px;
+    margin:10px auto;
+    width:300px;
+    border-radius:8px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.3);
+    text-align:left;
+}
+
+.upgrade-card button{
+    background:#ff6600;
+    color:white;
+    border:none;
+    padding:5px 10px;
+    cursor:pointer;
+    border-radius:4px;
 }
