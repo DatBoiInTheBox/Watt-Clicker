@@ -1,50 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-
-<title>Watt Clicker</title>
-
-<link rel="stylesheet" href="style.css">
-
+    <meta charset="UTF-8">
+    <title>Watt Clicker</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<h1>Watt Clicker</h1>
+    <!-- Global stats bar -->
+    <div id="globalStats" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: #222;
+        color: #fff;
+        padding: 10px 20px;
+        font-family: Arial, sans-serif;
+        z-index: 9999;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    ">
+        <div>Stored CP: <span id="globalCP">0 MB</span></div>
+        <div>Storage: <span id="globalStorage">0 / 1 GB</span></div>
+        <div>Money: $<span id="globalMoney">0</span></div>
+        <div>Friend Slots: <span id="globalSlots">1</span></div>
+    </div>
 
-<div id="stats">
+    <!-- Main content pushed below stats bar -->
+    <div id="mainContent" style="margin-top:60px; padding: 10px;">
+        <h1>Watt Clicker</h1>
 
-<p>Stored CP: <span id="cp">0 MB</span></p>
-<p>Storage: <span id="storage">0 / 1 GB</span></p>
-<p>Money: $<span id="money">0</span></p>
+        <div id="stats">
+            <p>Stored CP: <span id="cp">0 MB</span></p>
+            <p>Storage: <span id="storage">0 / 1 GB</span></p>
+            <p>Money: $<span id="money">0</span></p>
+        </div>
+
+        <button id="clickButton">Generate CP</button>
+
+        <hr>
+
+        <button onclick="openCPBook()">Open CPBook</button>
+        <button onclick="openDepot()">Open Home Depot</button>
+        <button onclick="openWalmart()">Go to Walmart</button>
+
+    <!-- CPBook App -->
+    <div id="cpbookApp" class="app hidden">
+        <!-- Top bar -->
+        <div class="cpbook-topbar">
+            <h1>CPBook</h1>
+        </div>
+
+        <!-- Buyers feed -->
+        <div id="buyers" class="cpbook-feed"></div>
+
+        <!-- Facebook-style Friend Slots Card -->
+<div style="
+    max-width:420px;
+    margin:20px auto;
+    background:#ffffff;
+    border-radius:8px;
+    box-shadow:0 1px 2px rgba(0,0,0,0.1);
+    padding:20px;
+    font-family: Helvetica, Arial, sans-serif;
+    text-align:center;
+">
+
+    <p style="
+        font-size:16px;
+        color:#050505;
+        margin-bottom:15px;
+    ">
+        Current friend slots: <strong id="slotCount">1</strong>
+    </p>
+
+    <button onclick="buyFriendSlot()" style="
+        background:#1877f2;
+        color:white;
+        border:none;
+        border-radius:6px;
+        padding:10px 18px;
+        font-size:15px;
+        font-weight:600;
+        cursor:pointer;
+    ">
+        Buy Friend Slot ($<span id="slotCost">20</span>)
+    </button>
 
 </div>
 
-<button id="clickButton">Generate CP</button>
+        <!-- Exit button -->
+        <button class="exit-button" onclick="closeCPBook()">Exit</button>
 
-<hr>
+        <!-- buyer refresh timer -->
+        <div style="text-align:center; margin-top:10px;">
+            <small>Next buyer refresh in: <span id="buyerRefreshTimer">60 min</span></small>
+        </div>
+    </div>
 
-<button onclick="openCPBook()">Open CPBook</button>
-<button onclick="openDepot()">Open Home Depot</button>
+        <!-- Home Depot App -->
+        <div id="depotApp" class="app hidden">
+            <div class="depot-header">
+                <img src="portraits/dp.png" alt="Logo" class="depot-logo">
+                <div class="depot-titles">
+                    <h2>Hello Jim Watt, Welcome to Home Depot!</h2>
+                    <h3>Here are our related products that we believe will correlate to your premium shopping experience!</h3>
+                </div>
+            </div>
+            <div id="upgradeList" class="upgrade-grid"></div>
+            <button onclick="closeDepot()" class="exit-button">Exit Home Depot</button>
+        </div>
 
-<div id="cpbookApp" class="app hidden">
-<h2>CPBook</h2>
-<div id="buyers"></div>
-<button onclick="closeCPBook()">Exit</button>
-</div>
+        <audio id="depotAudio" src="sounds/hdt.mp3"></audio>
 
-<div id="depotApp" class="app hidden">
-    <h2 style="color:#ff6600">Home Depot</h2>
-    <div id="upgradeList"></div>
-    <button onclick="closeDepot()" style="background:#ff6600;color:white;padding:10px;margin-top:10px;">Exit Home Depot</button>
-</div>
+        <!-- Walmart App -->
+        <div id="walmartApp" class="app hidden">
+            <h2 style="color:#0071ce">Walmart Storage</h2>
+            <div id="storageList"></div>
+            <button onclick="closeWalmart()" style="background:#0071ce;color:white;padding:10px;margin-top:10px;">Exit Walmart</button>
+        </div>
+    </div>
 
-<script src="js/game.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/buyers.js"></script>
-<script src="js/cpbook.js"></script>
-<script src="js/homedepot.js"></script>
+    <!-- JS Scripts -->
+    <script src="js/game.js"></script>
+    <script src="js/cpbook.js"></script>
+    <script src="js/homedepot.js"></script>
+    <script src="js/walmart.js"></script>
 
 </body>
 </html>

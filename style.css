@@ -14,20 +14,31 @@ margin:5px;
 
 }
 
-.app {
-    position: fixed;
+#globalStats {
+    position: fixed; /* stay on top */
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background: #f0f2f5; /* default, overwritten by depotApp orange */
-    color: black;
-    padding: 20px;
-    text-align: center;
+    background: #333;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    font-family: Arial, sans-serif;
+    z-index: 1000; /* above all apps */
+}
 
-    /* MAKE IT SCROLLABLE */
-    overflow-y: auto;   /* vertical scroll if content too tall */
-    box-sizing: border-box;
+.app {
+    position: fixed;
+    top: 50px; /* leave space for the stats bar */
+    left: 0;
+    width: 100%;
+    height: calc(100% - 50px);
+    background: #f0f2f5;
+    overflow-y: auto;
+    z-index: 900;
+    /* display: none;  <-- remove this line */
+    padding: 20px;
 }
 
 
@@ -38,31 +49,164 @@ display:none;
 
 }
 
-.buyer-card{
-    background:white;
-    color:black;
-    padding:10px;
-    margin:10px auto;
-    width:300px;
-    border-radius:8px;
-    box-shadow:0 2px 5px rgba(0,0,0,0.2);
-    text-align:left;
+/* Container */
+#cpbookApp {
+    background: #f0f2f5;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    padding-top: 60px;
+    text-align: center;
 }
-.buyer-card button{
-    background:#1877f2;
-    color:white;
-    border:none;
-    padding:5px 10px;
-    cursor:pointer;
-    border-radius:4px;
+
+/* Top bar */
+.cpbook-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: #1877f2; /* Facebook blue */
+    color: white;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+
+/* Feed container */
+.cpbook-feed {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+}
+
+.cp-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #1877f2;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+/* Buyer card (like a FB post) */
+.buyer-card {
+    background: white;
+    color: black;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    padding: 15px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.buyer-card img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Buyer info */
+.buyer-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.2rem;
+}
+
+.buyer-info p {
+    margin: 2px 0;
+    font-size: 0.95rem;
+}
+
+/* Sell button */
+.buyer-card button {
+    margin-left: auto;
+    background: #1877f2;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.buyer-card button:hover {
+    background: #0d65d9;
+}
+
+/* Exit button */
+.exit-button {
+    margin: 20px auto;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    background: #1877f2;
+    color: white;
+    cursor: pointer;
+}
+
+.exit-button:hover {
+    background: #0d65d9;
 }
 
 /* Home Depot style */
-#depotApp{
-    background:#ff6600; /* Home Depot orange */
-    color:white;
-    padding:20px;
-    text-align:center;
+/* Home Depot app container */
+#depotApp {
+    background: #ff6600;
+    color: white;
+    padding: 20px;
+}
+
+/* Header with logo and titles side by side */
+.depot-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Logo size and spacing */
+.depot-logo {
+    width: 300px;        /* adjust as needed */
+    height: 200px;
+    margin-right: 15px;
+}
+
+/* Titles stacked vertically */
+.depot-titles h2, .depot-titles h3 {
+    margin: 0;
+}
+
+/* Exit button styling */
+.exit-button {
+    background: #ff6600;
+    color: white;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.upgrade-grid {
+    display: flex;            /* use flex layout */
+    flex-wrap: wrap;          /* allow multiple rows */
+    justify-content: center;  /* center cards horizontally */
+    gap: 10px;                /* space between cards */
+    padding: 10px;
 }
 
 .upgrade-card{
@@ -78,6 +222,26 @@ display:none;
 
 .upgrade-card button{
     background:#ff6600;
+    color:white;
+    border:none;
+    padding:5px 10px;
+    cursor:pointer;
+    border-radius:4px;
+}
+
+.storage-card{
+    background:white;
+    color:black;
+    padding:10px;
+    margin:10px auto;
+    width:300px;
+    border-radius:8px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.3);
+    text-align:left;
+}
+
+.storage-card button{
+    background:#0071ce;
     color:white;
     border:none;
     padding:5px 10px;
