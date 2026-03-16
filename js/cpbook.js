@@ -38,7 +38,7 @@ function randomName() {
 }
 
 function randomPortrait() {
-    const number = Math.floor(Math.random() * 10) + 1;
+    const number = Math.floor(Math.random() * 21) + 1;
     return `portraits/${number}.png`;
 }
 
