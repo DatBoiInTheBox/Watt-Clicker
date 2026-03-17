@@ -2,14 +2,18 @@
 
 // --- Upgrades ---
 const upgrades = [
-    { name: "Poloroid Camera", cost: 10, production: 5, portrait: "pr1" },
-    { name: "1080p Camera", cost: 20, production: 12, portrait: "pr2" },
-    { name: "Samsung Phone", cost: 100, production: 60, portrait: "pr3" },
-    { name: "4k Camera", cost: 200, production: 150, portrait: "pr4" },
-    { name: "GoPro", cost: 1000, production: 500, portrait: "pr5" },
-    { name: "IPhone 17", cost: 5000, production: 2350, portrait: "pr6" },
-    { name: "Production Agency", cost: 7500, production: 5000, portrait: "pr7" }, // MB/sec
-    { name: "Boat Party", cost: 10000, production: 7500, portrait: "pr8" }
+    { name: "Logitech C270", cost: 15, production: 1, portrait: "pr1" },
+    { name: "Renewed Smartphone", cost: 120, production: 5, portrait: "pr2" },
+    { name: "DJI Action 5 Pro", cost: 450, production: 15, portrait: "pr3" },
+    { name: "Nikon COOLPIX P900", cost: 900, production: 40, portrait: "pr4" },
+    { name: "Z50II", cost: 2200, production: 120, portrait: "pr5" },
+    { name: "4K Sony Camera", cost: 5000, production: 450, portrait: "pr6" },
+    { name: "Traficker", cost: 15000, production: 1500, portrait: "pr7" }, // MB/sec
+    { name: "Production Member", cost: 45000, production: 5000, portrait: "pr8" },
+    { name: "Full Production Crew", cost: 75000, production: 12000, portrait: "pr9" },
+    { name: "AI Optimization", cost: 250000, production: 50000, portrait: "pr10" },
+    { name: "AI Production", cost: 800000, production: 250000, portrait: "pr11" },
+    { name: "Global Network", cost: 2500000, production: 1000000, portrait: "pr12" },
 ];
 
 let purchasedUpgrades = upgrades.map(u => 0);

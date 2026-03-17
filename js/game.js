@@ -52,6 +52,29 @@ function updateUI() {
     if (globalSlots) globalSlots.textContent = buyerSlots;
 }
 
+function showNotification(text) {
+
+    const note = document.createElement("div");
+    note.textContent = text;
+
+    note.style.position = "fixed";
+    note.style.bottom = "20px";
+    note.style.left = "50%";
+    note.style.transform = "translateX(-50%)";
+    note.style.background = "#1877f2";
+    note.style.color = "white";
+    note.style.padding = "10px 16px";
+    note.style.borderRadius = "6px";
+    note.style.fontWeight = "600";
+    note.style.zIndex = "9999";
+
+    document.body.appendChild(note);
+
+    setTimeout(() => {
+        note.remove();
+    }, 2500);
+}
+
 // ---------------------------
 // Passive CP generation
 // ---------------------------
