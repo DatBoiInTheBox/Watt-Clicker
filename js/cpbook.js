@@ -166,18 +166,6 @@ window.giveCP = function(index) {
     const buyer = buyers[index];
     if (!buyer) return;
 
-    let dialogue = "";
-
-    // dialogue BEFORE spending CP
-    if (buyer.stage === "spawn") {
-        buyer.dialogue = randomDialogue(spawnDialogues);
-        updateBuyerDialogue(index);
-        buyer.stage = "half";
-    } else if (buyer.stage === "half") {
-        buyer.dialogue = randomDialogue(halfDialogues);
-        updateBuyerDialogue(index);
-    }
-
     if (window.cp <= 0) {
         alert("You have no CP!");
         return;
@@ -189,19 +177,30 @@ window.giveCP = function(index) {
     window.cp -= amount;
     buyer.deliveredCP += amount;
 
+    // $1 per CP
+    window.money += amount;
+
     window.updateUI();
 
-    // ---------------------------
-    // COMPLETION
-    // ---------------------------
+    // dialogue handling
+    if (buyer.stage === "spawn") {
+        buyer.dialogue = randomDialogue(spawnDialogues);
+        buyer.stage = "half";
+    } else if (buyer.stage === "half") {
+        buyer.dialogue = randomDialogue(halfDialogues);
+    }
+
+    updateBuyerDialogue(index);
+
+    // completion
     if (buyer.deliveredCP >= buyer.requiredCP) {
 
         buyer.dialogue = randomDialogue(completeDialogues);
         updateBuyerDialogue(index);
 
+        // payout
         window.money += buyer.payout;
 
-        // update UI immediately so final dialogue shows
         displayCPBook();
 
         setTimeout(() => {
@@ -212,14 +211,7 @@ window.giveCP = function(index) {
         return;
     }
 
-    // ---------------------------
-    // HALF PROGRESS TRIGGER
-    // ---------------------------
-    if (buyer.deliveredCP >= buyer.requiredCP / 2 && buyer.stage === "half") {
-        showNotification(`${buyer.name}: "${dialogue}"`);
-    }
-
-    showNotification(`Sent ${formatCP(amount)} CP`);
+    displayCPBook();
 };
 
 // ---------------------------
@@ -233,7 +225,10 @@ function displayCPBook() {
 
     buyers.forEach((buyer, index) => {
 
-        const progress = buyer.deliveredCP / buyer.requiredCP;
+        // prevent NaN / division issues
+        const progress = buyer.requiredCP > 0 
+            ? Math.min(buyer.deliveredCP / buyer.requiredCP, 1) 
+            : 0;
 
         const card = document.createElement("div");
         card.className = "buyer-card";
@@ -242,14 +237,13 @@ function displayCPBook() {
             <img src="${buyer.portrait}" style="width:60px;height:60px;border-radius:50%;float:left;margin-right:10px;">
 
             <div class="buyer-info">
-                <h3>
-                ${buyer.name}
-                <span style="color:${buyer.rarityColor};font-size:12px;">
-                [${buyer.rarity}]
-                </span>
-                </h3>
 
-                <p>${buyer.age}</p>
+                <h3>
+                    ${buyer.name}, ${buyer.age}
+                    <span style="color:${buyer.rarityColor};font-size:12px;">
+                        [${buyer.rarity}]
+                    </span>
+                </h3>
 
                 <div id="dialogue-${index}" style="
                     margin:6px 0;
@@ -265,9 +259,12 @@ function displayCPBook() {
                 <p>Request: ${formatCP(buyer.requiredCP)}</p>
                 <p>Delivered: ${formatCP(buyer.deliveredCP)}</p>
 
+                <p>Payout: $${buyer.payout}</p>
+
                 <div style="background:#ddd;height:8px;border-radius:5px;">
-                    <div style="width:${progress*100}%;background:#1877f2;height:8px;border-radius:5px;"></div>
+                    <div style="width:${progress * 100}%;background:#1877f2;height:8px;border-radius:5px;"></div>
                 </div>
+
             </div>
 
             <button onclick="giveCP(${index})">Send CP</button>
