@@ -171,9 +171,11 @@ window.giveCP = function(index) {
     // dialogue BEFORE spending CP
     if (buyer.stage === "spawn") {
         buyer.dialogue = randomDialogue(spawnDialogues);
+        updateBuyerDialogue(index);
         buyer.stage = "half";
     } else if (buyer.stage === "half") {
         buyer.dialogue = randomDialogue(halfDialogues);
+        updateBuyerDialogue(index);
     }
 
     if (window.cp <= 0) {
@@ -195,6 +197,7 @@ window.giveCP = function(index) {
     if (buyer.deliveredCP >= buyer.requiredCP) {
 
         buyer.dialogue = randomDialogue(completeDialogues);
+        updateBuyerDialogue(index);
 
         window.money += buyer.payout;
 
@@ -300,6 +303,11 @@ function generateBuyers() {
     }
 
     displayCPBook();
+}
+
+function updateBuyerDialogue(index) {
+    const el = document.getElementById(`dialogue-${index}`);
+    if (el) el.textContent = buyers[index].dialogue || "";
 }
 
 // ---------------------------
