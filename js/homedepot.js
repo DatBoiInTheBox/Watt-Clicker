@@ -1,6 +1,5 @@
 // js/homedepot.js
 
-// --- Upgrades ---
 const upgrades = [
     { name: "Logitech C270", baseCost: 15, production: 1, portrait: "pr1" },
     { name: "Renewed Smartphone", baseCost: 120, production: 5, portrait: "pr2" },
@@ -21,18 +20,12 @@ const COST_MULTIPLIER = 1.15;
 
 let purchasedUpgrades = upgrades.map(() => 0);
 
-// ---------------------------
-// COST CALCULATION
-// ---------------------------
 function getUpgradeCost(index) {
     const base = upgrades[index].baseCost;
     const owned = purchasedUpgrades[index];
     return Math.floor(base * Math.pow(COST_MULTIPLIER, owned));
 }
 
-// ---------------------------
-// LOAD / SAVE HOOK
-// ---------------------------
 window.getUpgradeSave = function() {
     return {
         purchasedUpgrades: purchasedUpgrades
@@ -53,9 +46,6 @@ window.loadUpgradeSave = function(data) {
     }
 };
 
-// ---------------------------
-// OPEN / CLOSE
-// ---------------------------
 window.addEventListener("load", function() {
     const audio = new Audio("sounds/hdt.mp3");
 
@@ -78,9 +68,6 @@ window.addEventListener("load", function() {
     };
 });
 
-// ---------------------------
-// DISPLAY
-// ---------------------------
 function displayDepot(){
     const list = document.getElementById("upgradeList");
     list.innerHTML = "";
@@ -159,9 +146,6 @@ function displayDepot(){
     });
 }
 
-// ---------------------------
-// BUY
-// ---------------------------
 function buyUpgrade(index){
     const cost = getUpgradeCost(index);
 

@@ -6,16 +6,10 @@ let feed = document.getElementById("buyers") || null;
 let firstNames = [];
 let lastNames = [];
 
-// ---------------------------
-// DIALOGUE STORAGE (MISSING BEFORE)
-// ---------------------------
 let spawnDialogues = [];
 let halfDialogues = [];
 let completeDialogues = [];
 
-// ---------------------------
-// LOAD NAME + DIALOGUE FILES
-// ---------------------------
 async function loadNames() {
     try {
         const firstRes = await fetch("data/first.txt");
@@ -44,9 +38,6 @@ async function loadNames() {
     }
 }
 
-// ---------------------------
-// RANDOM HELPERS (RESTORED SAFETY)
-// ---------------------------
 function randomDialogue(list) {
     if (!list || list.length === 0) return "...";
     return list[Math.floor(Math.random() * list.length)];
@@ -59,13 +50,10 @@ function randomName() {
 }
 
 function randomPortrait() {
-    const number = Math.floor(Math.random() * 26) + 1;
+    const number = Math.floor(Math.random() * 43) + 1;
     return `portraits/${number}.png`;
 }
 
-// ---------------------------
-// RARITY SYSTEM (UNCHANGED)
-// ---------------------------
 const rarities = [
     {name:"Common", chance:0.60, multiplier:1, color:"#777"},
     {name:"Uncommon", chance:0.25, multiplier:1.5, color:"#2ecc71"},
@@ -118,9 +106,6 @@ function rollRarity(){
     return rarities[0];
 }
 
-// ---------------------------
-// GENERATE BUYER (UNCHANGED)
-// ---------------------------
 function generateBuyer() {
 
     let rarity = rollRarity();
@@ -158,9 +143,6 @@ function generateBuyer() {
     };
 }
 
-// ---------------------------
-// GIVE CP (FIXED + SAFE)
-// ---------------------------
 window.giveCP = function(index) {
 
     const buyer = buyers[index];
@@ -214,9 +196,6 @@ window.giveCP = function(index) {
     displayCPBook();
 };
 
-// ---------------------------
-// DISPLAY (UPDATED WITH DIALOGUE)
-// ---------------------------
 function displayCPBook() {
 
     if (!feed) return;
@@ -273,10 +252,6 @@ function displayCPBook() {
         feed.appendChild(card);
     });
 }
-
-// ---------------------------
-// OPEN / CLOSE (UNCHANGED)
-// ---------------------------
 window.openCPBook = function() {
     const app = document.getElementById("cpbookApp");
     if (app) app.classList.remove("hidden");
@@ -288,9 +263,6 @@ window.closeCPBook = function() {
     if (app) app.classList.add("hidden");
 };
 
-// ---------------------------
-// GENERATE BUYERS (RESTORED - YOU WERE MISSING THIS)
-// ---------------------------
 function generateBuyers() {
 
     buyers = [];
@@ -307,9 +279,6 @@ function updateBuyerDialogue(index) {
     if (el) el.textContent = buyers[index].dialogue || "";
 }
 
-// ---------------------------
-// INIT (FIXED)
-// ---------------------------
 window.addEventListener("load", async function () {
 
     feed = document.getElementById("buyers");

@@ -16,9 +16,6 @@ window.buyerSlotCost = buyerSlotCost;
 window.updateUI = updateUI;
 window.formatCP = formatCP;
 
-// ---------------------------
-// FORMAT CP nicely
-// ---------------------------
 function formatCP(value) {
     if (value >= 1e12) return (value / 1e12).toFixed(2) + " EX";
     if (value >= 1e9) return (value / 1e9).toFixed(2) + " PB";
@@ -27,9 +24,6 @@ function formatCP(value) {
     return value + " MB";
 }
 
-// ---------------------------
-// UPDATE UI
-// ---------------------------
 function updateUI() {
     const cpEl = document.getElementById("cp");
     const storageEl = document.getElementById("storage");
@@ -54,9 +48,6 @@ function updateUI() {
     if (globalSlots) globalSlots.textContent = buyerSlots;
 }
 
-// ---------------------------
-// NOTIFICATION
-// ---------------------------
 function showNotification(text) {
     const note = document.createElement("div");
     note.textContent = text;
@@ -77,9 +68,6 @@ function showNotification(text) {
     setTimeout(() => note.remove(), 2500);
 }
 
-// ---------------------------
-// SAVE SYSTEM
-// ---------------------------
 function getSaveData() {
     return {
         cp: cp,
@@ -154,9 +142,6 @@ window.loadSaveFile = function (file) {
     reader.readAsText(file);
 };
 
-// ---------------------------
-// PASSIVE CP
-// ---------------------------
 setInterval(function () {
     if (cp < maxCP) {
         cp += production;
@@ -166,9 +151,6 @@ setInterval(function () {
     }
 }, 1000);
 
-// ---------------------------
-// LOAD EVENT
-// ---------------------------
 window.addEventListener("load", function () {
     const clickBtn = document.getElementById("clickButton");
     if (clickBtn) {
@@ -194,9 +176,6 @@ window.addEventListener("load", function () {
     
 });
 
-// ---------------------------
-// BUY SLOT
-// ---------------------------
 window.buyFriendSlot = function () {
     if (money >= buyerSlotCost) {
         money -= buyerSlotCost;
@@ -212,7 +191,4 @@ window.buyFriendSlot = function () {
     }
 };
 
-// ---------------------------
-// INITIAL UPDATE
-// ---------------------------
 updateUI();

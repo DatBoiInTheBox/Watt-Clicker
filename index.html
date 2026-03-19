@@ -8,7 +8,6 @@
 </head>
 
 <body>
-
     <!-- Global stats bar -->
     <div id="globalStats" style="
         position: fixed;
@@ -29,28 +28,22 @@
         <div>Money: $<span id="globalMoney">0</span></div>
         <div>Friend Slots: <span id="globalSlots">1</span></div>
     </div>
-
     <!-- Main content pushed below stats bar -->
     <div id="mainContent">
-    <h1 class="title">Watt Clicker (V3.1)</h1>
-
+    <h1 class="title">Watt Clicker (V3.2)</h1>
     <div id="stats">
         <div class="stat">Stored CP <span id="cp">0 MB</span></div>
         <div class="stat">Storage <span id="storage">0 / 1 GB</span></div>
         <div class="stat">Money $<span id="money">0</span></div>
     </div>
-
-    <!-- CLICK IMAGE -->
     <div id="clickContainer">
         <img src="websiteassets/watt.png" id="clickButton">
     </div>
-
     <div class="menu">
         <button onclick="openCPBook()">CPBook</button>
         <button onclick="openDepot()">Depot</button>
         <button onclick="openWalmart()">Walmart</button>
     </div>
-
     <div class="menu">
         <button onclick="downloadSave()">Download Save</button>
         <label class="uploadBtn">
@@ -60,22 +53,13 @@
     </div>
 </div>
 
-
-
-
 <!-- CPBook App -->
 <div id="cpbookApp" class="app hidden">
-
-    <!-- Facebook Top Bar -->
     <div class="cpbook-header">
         <h1>CPBook</h1>
         <button class="exit-button" onclick="closeCPBook()">Exit</button>
     </div>
-
-    <!-- Main Feed Area -->
     <div class="cpbook-container">
-
-        <!-- Left Sidebar -->
         <div class="cpbook-sidebar">
             <div class="fb-card">
                 <h3>Friend Slots</h3>
@@ -86,43 +70,29 @@
                 </button>
             </div>
         </div>
-
-        <!-- Feed -->
         <div class="cpbook-feed" id="buyers">
-            <!-- Buyer posts appear here -->
         </div>
-
     </div>
-
 </div>
 
 <div id="depotApp" class="app hidden">
-
     <div class="hd-container">
-
-        <!-- TOP BAR -->
         <div class="hd-topbar">
             <div class="hd-topbar-inner">
                 <div class="hd-left">
                     <img src="portraits/dp.png" class="hd-logo">
                     <span class="hd-brand">The Home Depot</span>
                 </div>
-
                 <input type="text" class="hd-search" placeholder="What can we help you find?">
-
                 <div class="hd-right">
                     <button onclick="closeDepot()" class="hd-btn">Exit</button>
                 </div>
             </div>
         </div>
-
-        <!-- GREETING -->
         <div class="hd-greeting">
             <h2>Welcome back, Jim Watt</h2>
-            <p>Upgrade your system with professional-grade equipment.</p>
+            <p>Look at our quality product recommendations based on your needs.</p>
         </div>
-
-        <!-- CATEGORY BAR -->
         <div class="hd-categories">
             <button>Building Materials</button>
             <button>Tools</button>
@@ -130,17 +100,12 @@
             <button>Plumbing</button>
             <button>Storage</button>
         </div>
-
-        <!-- PRODUCTS -->
         <div id="upgradeList" class="hd-products"></div>
-
     </div>
 </div>
 
 <!-- Walmart App -->
 <div id="walmartApp" class="app hidden" style="font-family:Arial,sans-serif;background:#f3f3f3;padding:10px;">
-
-    <!-- Walmart Top Bar -->
     <div style="
         background:#0071ce;color:white;padding:15px;
         display:flex;justify-content:space-between;align-items:center;
@@ -152,8 +117,6 @@
             border-radius:4px;cursor:pointer;
         ">Exit</button>
     </div>
-
-    <!-- Fake Menu -->
     <div style="display:flex;justify-content:space-around;background:#e5e5e5;padding:8px 0;margin-top:5px;border-radius:0 0 5px 5px;">
         <button class="w-menu-btn">Electronics</button>
         <button class="w-menu-btn">Home</button>
@@ -161,19 +124,13 @@
         <button class="w-menu-btn">Grocery</button>
         <button class="w-menu-btn">Clothing</button>
     </div>
-
-    <!-- Banner / Promo -->
     <div style="margin:10px 0;position:relative;">
         <img src="websiteassets/spark-icon.svg" style="width:5%;border-radius:5px;">
         <div style="position:absolute;bottom:10px;left:15px;color:white;font-weight:bold;font-size:18px;text-shadow:1px 1px 2px black;">
             Rollback Deals on Storage Drives!
         </div>
     </div>
-
-    <!-- Storage Upgrades / Products -->
     <div id="storageList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;"></div>
-
-    <!-- Suggested / Bloat Products -->
     <h3 style="margin-top:20px;color:#0071ce;">Customers also looked at</h3>
     <div style="display:flex;overflow-x:auto;padding-bottom:10px;gap:10px;">
     <div class="w-bloat-card" style="min-width:140px;background:white;padding:10px;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1);text-align:center;">
@@ -232,7 +189,6 @@
         <div style="color:#333;">$79.99</div>
     </div>
 </div>
-
     <!-- JS Scripts -->
     <script src="js/game.js"></script>
     <script src="js/cpbook.js"></script>

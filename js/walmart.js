@@ -1,8 +1,5 @@
 // js/walmart.js
 
-// ---------------------------
-// STORAGE UPGRADES
-// ---------------------------
 const storageUpgrades = [
     { name: "Onn Flash Drive 500MB",   baseCost: 5,     increase: 500,    img: "portraits/wm1.png" },
     { name: "Onn Flash Drive 2GB",     baseCost: 150,    increase: 2000,   img: "portraits/wm2.png" },
@@ -20,18 +17,12 @@ const STORAGE_COST_MULTIPLIER = 1.15;
 // owned count
 let purchasedStorage = storageUpgrades.map(() => 0);
 
-// ---------------------------
-// COST CALC
-// ---------------------------
 function getStorageCost(index) {
     const base = storageUpgrades[index].baseCost;
     const owned = purchasedStorage[index];
     return Math.floor(base * Math.pow(STORAGE_COST_MULTIPLIER, owned));
 }
 
-// ---------------------------
-// SAVE / LOAD HOOKS
-// ---------------------------
 window.getWalmartSave = function() {
     return {
         purchasedStorage: purchasedStorage
@@ -52,9 +43,6 @@ window.loadWalmartSave = function(data) {
     }
 };
 
-// ---------------------------
-// OPEN / CLOSE
-// ---------------------------
 window.addEventListener("load", function() {
     window.openWalmart = function() {
         const app = document.getElementById("walmartApp");
@@ -68,9 +56,6 @@ window.addEventListener("load", function() {
     };
 });
 
-// ---------------------------
-// DISPLAY
-// ---------------------------
 window.displayWalmart = function() {
     const list = document.getElementById("storageList");
     list.innerHTML = "";
@@ -94,9 +79,6 @@ window.displayWalmart = function() {
     });
 };
 
-// ---------------------------
-// BUY
-// ---------------------------
 window.buyStorage = function(index){
     const cost = getStorageCost(index);
 
