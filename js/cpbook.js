@@ -153,7 +153,8 @@ function generateBuyer() {
         age,
         rarity:rarity.name,
         rarityColor:rarity.color,
-        stage: "spawn"
+        stage: "spawn",
+        dialogue: randomDialogue(spawnDialogues) // 👈 NEW
     };
 }
 
@@ -169,10 +170,10 @@ window.giveCP = function(index) {
 
     // dialogue BEFORE spending CP
     if (buyer.stage === "spawn") {
-        dialogue = randomDialogue(spawnDialogues);
+        buyer.dialogue = randomDialogue(spawnDialogues);
         buyer.stage = "half";
     } else if (buyer.stage === "half") {
-        dialogue = randomDialogue(halfDialogues);
+        buyer.dialogue = randomDialogue(halfDialogues);
     }
 
     if (window.cp <= 0) {
@@ -193,20 +194,18 @@ window.giveCP = function(index) {
     // ---------------------------
     if (buyer.deliveredCP >= buyer.requiredCP) {
 
-        dialogue = randomDialogue(completeDialogues);
+        buyer.dialogue = randomDialogue(completeDialogues);
 
         window.money += buyer.payout;
 
-        showNotification(
-            `${buyer.name}: "${dialogue}" (+$${buyer.payout.toLocaleString()})`
-        );
+        // update UI immediately so final dialogue shows
+        displayCPBook();
 
         setTimeout(() => {
             buyers[index] = generateBuyer();
             displayCPBook();
         }, 3000);
 
-        displayCPBook();
         return;
     }
 
