@@ -220,7 +220,7 @@ window.giveCP = function(index) {
 };
 
 // ---------------------------
-// DISPLAY (UNCHANGED)
+// DISPLAY (UPDATED WITH DIALOGUE)
 // ---------------------------
 function displayCPBook() {
 
@@ -247,6 +247,17 @@ function displayCPBook() {
                 </h3>
 
                 <p>${buyer.age}</p>
+
+                <div id="dialogue-${index}" style="
+                    margin:6px 0;
+                    padding:6px 8px;
+                    background:#f4f4f4;
+                    border-radius:6px;
+                    font-style:italic;
+                    font-size:13px;
+                ">
+                    ${buyer.dialogue || ""}
+                </div>
 
                 <p>Request: ${formatCP(buyer.requiredCP)}</p>
                 <p>Delivered: ${formatCP(buyer.deliveredCP)}</p>
