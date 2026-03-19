@@ -6,7 +6,8 @@ window.maxCP = 1000;
 window.production = 1;
 window.buyerSlots = 1;
 window.buyerSlotCost = 20;
-// js/game.js
+
+// expose globals
 window.cp = cp;
 window.money = money;
 window.maxCP = maxCP;
@@ -14,8 +15,9 @@ window.buyerSlots = buyerSlots;
 window.buyerSlotCost = buyerSlotCost;
 window.updateUI = updateUI;
 window.formatCP = formatCP;
+
 // ---------------------------
-// FORMAT CP nicely (MB, GB, TB, etc.)
+// FORMAT CP nicely
 // ---------------------------
 function formatCP(value) {
     if (value >= 1e12) return (value / 1e12).toFixed(2) + " EX";
@@ -26,7 +28,7 @@ function formatCP(value) {
 }
 
 // ---------------------------
-// UPDATE UI function
+// UPDATE UI
 // ---------------------------
 function updateUI() {
     const cpEl = document.getElementById("cp");
@@ -52,8 +54,10 @@ function updateUI() {
     if (globalSlots) globalSlots.textContent = buyerSlots;
 }
 
+// ---------------------------
+// NOTIFICATION
+// ---------------------------
 function showNotification(text) {
-
     const note = document.createElement("div");
     note.textContent = text;
 
@@ -70,52 +74,137 @@ function showNotification(text) {
 
     document.body.appendChild(note);
 
-    setTimeout(() => {
-        note.remove();
-    }, 2500);
+    setTimeout(() => note.remove(), 2500);
 }
 
 // ---------------------------
-// Passive CP generation
+// SAVE SYSTEM
+// ---------------------------
+function getSaveData() {
+    return {
+        cp: cp,
+        money: money,
+        maxCP: maxCP,
+        production: production,
+        buyerSlots: buyerSlots,
+        buyerSlotCost: buyerSlotCost,
+        upgrades: window.getUpgradeSave ? window.getUpgradeSave() : null,
+        walmart: window.getWalmartSave ? window.getWalmartSave() : null,
+        blackMarket: window.getBlackMarketSave ? window.getBlackMarketSave() : null
+    };
+}
+
+window.downloadSave = function () {
+    const data = JSON.stringify(getSaveData());
+    const blob = new Blob([data], { type: "application/json" });
+
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "watt-clicker.sav";
+    a.click();
+
+    showNotification("Save downloaded!");
+};
+
+window.loadSaveFile = function (file) {
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        try {
+            const data = JSON.parse(e.target.result);
+
+            // --- CORE DATA ---
+            cp = data.cp || 0;
+            money = data.money || 0;
+            maxCP = data.maxCP || 1000;
+            production = data.production || 1;
+            buyerSlots = data.buyerSlots || 1;
+            buyerSlotCost = data.buyerSlotCost || 20;
+
+            // --- LOAD UPGRADES ---
+            if (data.upgrades && window.loadUpgradeSave) {
+                window.loadUpgradeSave(data.upgrades);
+            }
+            if (data.walmart && window.loadWalmartSave) {
+                window.loadWalmartSave(data.walmart);
+            }
+
+            // --- SYNC GLOBALS ---
+            window.cp = cp;
+            window.money = money;
+            window.maxCP = maxCP;
+            window.buyerSlots = buyerSlots;
+            window.buyerSlotCost = buyerSlotCost;
+
+            // --- REFRESH UI ---
+            updateUI();
+
+            // refresh depot UI if it's open
+            if (window.displayDepot) {
+                displayDepot();
+            }
+
+            showNotification("Save loaded!");
+        } catch (err) {
+            console.error(err);
+            alert("Invalid save file!");
+        }
+    };
+
+    reader.readAsText(file);
+};
+
+// ---------------------------
+// PASSIVE CP
 // ---------------------------
 setInterval(function () {
     if (cp < maxCP) {
         cp += production;
-        window.cp = cp;;
+        window.cp = cp;
         if (cp > maxCP) cp = maxCP;
         updateUI();
     }
 }, 1000);
 
 // ---------------------------
-// DOM loaded: attach click handler
+// LOAD EVENT
 // ---------------------------
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
     const clickBtn = document.getElementById("clickButton");
     if (clickBtn) {
-        clickBtn.onclick = function() {
+        clickBtn.onclick = function () {
             if (cp < maxCP) {
                 cp += 10;
-                window.cp = cp; // clicking gives 10 CP
+                window.cp = cp;
                 if (cp > maxCP) cp = maxCP;
                 updateUI();
             }
         };
     }
-
-    // Initial UI update
+    const loadInput = document.getElementById("loadSave");
+    if (loadInput) {
+        loadInput.addEventListener("change", function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                loadSaveFile(file);
+            }
+        });
+    }
     updateUI();
+    
 });
 
 // ---------------------------
-// Buy friend slot button function
+// BUY SLOT
 // ---------------------------
-window.buyFriendSlot = function() {
+window.buyFriendSlot = function () {
     if (money >= buyerSlotCost) {
         money -= buyerSlotCost;
         window.money = money;
+
         buyerSlots++;
-        buyerSlotCost = Math.ceil(buyerSlotCost * 1.5); // increase cost 1.5x each purchase
+        buyerSlotCost = Math.ceil(buyerSlotCost * 1.5);
+
         updateUI();
         generateBuyers();
     } else {
@@ -123,8 +212,7 @@ window.buyFriendSlot = function() {
     }
 };
 
-
 // ---------------------------
-// Initial UI update on load
+// INITIAL UPDATE
 // ---------------------------
 updateUI();

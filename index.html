@@ -31,22 +31,37 @@
     </div>
 
     <!-- Main content pushed below stats bar -->
-    <div id="mainContent" style="margin-top:60px; padding: 10px;">
-        <h1>Watt Clicker</h1>
+    <div id="mainContent">
+    <h1 class="title">Watt Clicker</h1>
 
-        <div id="stats">
-            <p>Stored CP: <span id="cp">0 MB</span></p>
-            <p>Storage: <span id="storage">0 / 1 GB</span></p>
-            <p>Money: $<span id="money">0</span></p>
-        </div>
+    <div id="stats">
+        <div class="stat">Stored CP <span id="cp">0 MB</span></div>
+        <div class="stat">Storage <span id="storage">0 / 1 GB</span></div>
+        <div class="stat">Money $<span id="money">0</span></div>
+    </div>
 
-        <button id="clickButton">Generate CP</button>
+    <!-- CLICK IMAGE -->
+    <div id="clickContainer">
+        <img src="websiteassets/watt.png" id="clickButton">
+    </div>
 
-        <hr>
+    <div class="menu">
+        <button onclick="openCPBook()">CPBook</button>
+        <button onclick="openDepot()">Depot</button>
+        <button onclick="openWalmart()">Walmart</button>
+    </div>
 
-        <button onclick="openCPBook()">Open CPBook</button>
-        <button onclick="openDepot()">Open Home Depot</button>
-        <button onclick="openWalmart()">Go to Walmart</button>
+    <div class="menu">
+        <button onclick="downloadSave()">Download Save</button>
+        <label class="uploadBtn">
+            Import Save
+            <input type="file" id="loadSave">
+        </label>
+    </div>
+</div>
+
+
+
 
 <!-- CPBook App -->
 <div id="cpbookApp" class="app hidden">
@@ -81,20 +96,46 @@
 
 </div>
 
-        <!-- Home Depot App -->
-        <div id="depotApp" class="app hidden">
-            <div class="depot-header">
-                <img src="portraits/dp.png" alt="Logo" class="depot-logo">
-                <div class="depot-titles">
-                    <h2>Hello Jim Watt, Welcome to Home Depot!</h2>
-                    <h3>Here are our related products that we believe will correlate to your premium shopping experience!</h3>
+<div id="depotApp" class="app hidden">
+
+    <div class="hd-container">
+
+        <!-- TOP BAR -->
+        <div class="hd-topbar">
+            <div class="hd-topbar-inner">
+                <div class="hd-left">
+                    <img src="portraits/dp.png" class="hd-logo">
+                    <span class="hd-brand">The Home Depot</span>
+                </div>
+
+                <input type="text" class="hd-search" placeholder="What can we help you find?">
+
+                <div class="hd-right">
+                    <button onclick="closeDepot()" class="hd-btn">Exit</button>
                 </div>
             </div>
-            <div id="upgradeList" class="upgrade-grid"></div>
-            <button onclick="closeDepot()" class="exit-button">Exit Home Depot</button>
         </div>
 
-        <audio id="depotAudio" src="sounds/hdt.mp3"></audio>
+        <!-- GREETING -->
+        <div class="hd-greeting">
+            <h2>Welcome back, Jim Watt</h2>
+            <p>Upgrade your system with professional-grade equipment.</p>
+        </div>
+
+        <!-- CATEGORY BAR -->
+        <div class="hd-categories">
+            <button>Building Materials</button>
+            <button>Tools</button>
+            <button>Electrical</button>
+            <button>Plumbing</button>
+            <button>Storage</button>
+        </div>
+
+        <!-- PRODUCTS -->
+        <div id="upgradeList" class="hd-products"></div>
+
+    </div>
+</div>
 
 <!-- Walmart App -->
 <div id="walmartApp" class="app hidden" style="font-family:Arial,sans-serif;background:#f3f3f3;padding:10px;">
@@ -189,6 +230,7 @@
         <img src="websiteassets/doorbell.png" alt="onn Video Doorbell Wired" style="width:80px;margin-bottom:5px;">
         <div style="font-weight:bold;">onn Video Doorbell Wired</div>
         <div style="color:#333;">$79.99</div>
+    </div>
 </div>
 
     <!-- JS Scripts -->
@@ -196,6 +238,7 @@
     <script src="js/cpbook.js"></script>
     <script src="js/homedepot.js"></script>
     <script src="js/walmart.js"></script>
+    
 
 </body>
 </html>

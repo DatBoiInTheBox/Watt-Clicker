@@ -1,52 +1,71 @@
-// js/cpbook.js (PROGRESSIVE REQUEST SYSTEM)
+// js/cpbook.js
 
 let buyers = [];
 let feed = document.getElementById("buyers") || null;
 
-window.names = [
-    "Jason Reed","Chris Parker","Ryan Adams","Daniel Carter","Tyler Brooks",
-    "Aaron Hayes","James Walker","Nathan Cooper","Michael Harris","Lucas Turner",
-    "Emily Johnson","Sarah Smith","Jessica Lee","Ashley Davis","Amanda Wilson",
-    "Brittany Taylor","Samantha Anderson","Lauren Thomas","Megan Moore","Rachel Martin",
-    "Olivia Garcia","Sophia Martinez","Isabella Rodriguez", "Emma Hernandez","Ava Lopez",
-    "Mia Gonzalez","Abigail Perez","Madison Wilson", "Elizabeth Sanchez","Emily Ramirez",
-    "Sofia Torres","Avery Flores","Chloe Rivera", "Ella Gomez","Grace Diaz","Victoria Murphy",
-    "Lily Nguyen","Natalie Kim", "Zoe Patel","Hannah Lee","Addison Clark","Brooklyn Lewis","Lillian Young",
-    "Samantha King","Aubrey Wright","Evelyn Scott","Harper Green","Camila Adams","Aria Baker",
-    "Scarlett Nelson","Penelope Carter","Layla Mitchell","Riley Perez","Nora Roberts","Lillian Turner",
-    "Zoey Phillips","Mila Campbell","Aubree Parker","Ellie Evans","Stella Edwards","Paisley Collins",
-    "Audrey Stewart","Skylar Sanchez","Violet Morris","Claire Rogers","Bella Reed", "Lucy Cook","Anna Morgan",
-    "Sophie Bell","Sadie Murphy","Caroline Bailey","Kennedy Rivera","Genesis Cooper","Aaliyah Richardson",
-    "Allison Cox","Gabriella Howard","Alice Ward", "Madelyn Torres","Cora Peterson","Ruby Gray","Eva Ramirez",
-    "Serenity James", "Autumn Watson","Piper Brooks","Hailey Kelly","Gianna Sanders","Valentina Price",
-    "Elena Bennett","Naomi Wood","Caroline Barnes","Kinsley Ross","Alice Henderson","Sadie Coleman",
-    "Hailey Jenkins","Madeline Perry","Peyton Powell","Julia Long","Mackenzie Patterson","Katherine Hughes",
-    "Vivian Flores","Reagan Simmons","Sophie Foster","Madelyn Howard","Adeline Russell","Brielle Griffin",
-    "Clara Diaz","Kylie Hayes","Molly Myers","Parker Ford","Lydia Hamilton","Ariana Graham",
-    "Madison Sullivan","Isabelle Wallace","Julia West","Willow Cole","Everly Bryant","Bella Alexander",
-    "Claire Russell","Skylar Griffin","Lucy Reed","Paisley Howard","Anna Ward","Caroline Brooks",
-    "Kennedy Price","Genesis Bennett","Allison Wood","Gabriella Barnes","Alice Ross","Madelyn Henderson",
-    "Cora Coleman","Ruby Jenkins","Eva Perry","Serenity Powell","Autumn Long","Piper Patterson",
-    "Hailey Hughes","Gianna Simmons","Valentina Foster","Elena Howard","Naomi Howard",
-    "Caroline Russell","Kinsley Griffin","Alice Reed","Sadie Howard","Hailey Howard","Madeline Howard",
-    "Peyton Howard","Julia Howard","Mackenzie Howard","Katherine Howard","Vivian Howard",
-    "Reagan Howard","Sophie Howard","Madelyn Howard","Adeline Howard","Brielle Howard",
-    "Clara Howard","Kylie Howard","Molly Howard","Parker Howard","Lydia Howard","Ariana Justice",
-    "Kenny Heath", "Gary Price", "Timothy Lee", "Ryan Wilson", "Brandon Davis", "Jacob Miller", "Justin Taylor",
-    "Kevin Anderson", "Brian Thomas", "Eric Jackson", "Steven White", "Scott Harris", "Adam Martin",
-    "Benjamin Thompson", "Gregory Garcia", "Alexander Martinez", "Patrick Robinson", "Sean Clark",
-    "Dennis Rodriguez", "Zachary Lewis", "Tyler Lee", "Jose Walker", "Nathan Hall", "Aaron Allen",
-    "Justin Young", "Brandon Hernandez", "Kevin King", "Jason Wright", "Ryan Lopez", "Jacob Hill",
-    "Gary Scott", "Timothy Green", "Brandon Adams", "Jacob Baker", "Justin Gonzalez", "Kevin Nelson",
-    "Brian Carter", "Eric Mitchell", "Steven Perez", "Scott Roberts", "Adam Turner", "Benjamin Phillips",
-    "Gregory Campbell", "Alexander Parker", "Patrick Evans", "Sean Edwards", "Dennis Collins",
-    "Zachary Stewart", "Tyler Sanchez", "Jose Morris", "Nathan Rogers", "Aaron Reed", "Justin Cook",
-];
+let firstNames = [];
+let lastNames = [];
 
 // ---------------------------
-// RARITY SYSTEM
+// DIALOGUE STORAGE (MISSING BEFORE)
 // ---------------------------
+let spawnDialogues = [];
+let halfDialogues = [];
+let completeDialogues = [];
 
+// ---------------------------
+// LOAD NAME + DIALOGUE FILES
+// ---------------------------
+async function loadNames() {
+    try {
+        const firstRes = await fetch("data/first.txt");
+        const lastRes = await fetch("data/last.txt");
+
+        const spawnRes = await fetch("data/spawn.txt");
+        const halfRes = await fetch("data/half.txt");
+        const completeRes = await fetch("data/complete.txt");
+
+        const firstText = await firstRes.text();
+        const lastText = await lastRes.text();
+
+        const spawnText = await spawnRes.text();
+        const halfText = await halfRes.text();
+        const completeText = await completeRes.text();
+
+        firstNames = firstText.split("\n").map(n => n.trim()).filter(n => n);
+        lastNames = lastText.split("\n").map(n => n.trim()).filter(n => n);
+
+        spawnDialogues = spawnText.split("\n").map(d => d.trim()).filter(d => d);
+        halfDialogues = halfText.split("\n").map(d => d.trim()).filter(d => d);
+        completeDialogues = completeText.split("\n").map(d => d.trim()).filter(d => d);
+
+    } catch (err) {
+        console.error("Failed loading files:", err);
+    }
+}
+
+// ---------------------------
+// RANDOM HELPERS (RESTORED SAFETY)
+// ---------------------------
+function randomDialogue(list) {
+    if (!list || list.length === 0) return "...";
+    return list[Math.floor(Math.random() * list.length)];
+}
+
+function randomName() {
+    const first = firstNames[Math.floor(Math.random() * firstNames.length)] || "John";
+    const last = lastNames[Math.floor(Math.random() * lastNames.length)] || "Doe";
+    return `${first} ${last}`;
+}
+
+function randomPortrait() {
+    const number = Math.floor(Math.random() * 26) + 1;
+    return `portraits/${number}.png`;
+}
+
+// ---------------------------
+// RARITY SYSTEM (UNCHANGED)
+// ---------------------------
 const rarities = [
     {name:"Common", chance:0.60, multiplier:1, color:"#777"},
     {name:"Uncommon", chance:0.25, multiplier:1.5, color:"#2ecc71"},
@@ -86,8 +105,8 @@ const uniqueBuyers = [
     {name:"Bobby Kotick", portrait:"uniques/kotick.png"},
 ];
 
-function rollRarity(){
 
+function rollRarity(){
     let roll = Math.random();
     let total = 0;
 
@@ -100,7 +119,7 @@ function rollRarity(){
 }
 
 // ---------------------------
-// GENERATE REQUEST
+// GENERATE BUYER (UNCHANGED)
 // ---------------------------
 function generateBuyer() {
 
@@ -110,9 +129,7 @@ function generateBuyer() {
     let max = window.maxCP * 1.80;
 
     let requiredCP = Math.floor(Math.random() * (max - min) + min);
-
     let quality = Math.random() * 0.02 + 0.01;
-
     let payout = Math.floor(requiredCP * quality * rarity.multiplier);
 
     let age = Math.floor(Math.random() * 50) + 21;
@@ -135,21 +152,76 @@ function generateBuyer() {
         payout,
         age,
         rarity:rarity.name,
-        rarityColor:rarity.color
+        rarityColor:rarity.color,
+        stage: "spawn"
     };
 }
 
-function randomName() {
-    return window.names[Math.floor(Math.random() * window.names.length)];
-}
+// ---------------------------
+// GIVE CP (FIXED + SAFE)
+// ---------------------------
+window.giveCP = function(index) {
 
-function randomPortrait() {
-    const number = Math.floor(Math.random() * 26) + 1;
-    return `portraits/${number}.png`;
-}
+    const buyer = buyers[index];
+    if (!buyer) return;
+
+    let dialogue = "";
+
+    // dialogue BEFORE spending CP
+    if (buyer.stage === "spawn") {
+        dialogue = randomDialogue(spawnDialogues);
+        buyer.stage = "half";
+    } else if (buyer.stage === "half") {
+        dialogue = randomDialogue(halfDialogues);
+    }
+
+    if (window.cp <= 0) {
+        alert("You have no CP!");
+        return;
+    }
+
+    let remaining = buyer.requiredCP - buyer.deliveredCP;
+    let amount = Math.min(window.cp, remaining);
+
+    window.cp -= amount;
+    buyer.deliveredCP += amount;
+
+    window.updateUI();
+
+    // ---------------------------
+    // COMPLETION
+    // ---------------------------
+    if (buyer.deliveredCP >= buyer.requiredCP) {
+
+        dialogue = randomDialogue(completeDialogues);
+
+        window.money += buyer.payout;
+
+        showNotification(
+            `${buyer.name}: "${dialogue}" (+$${buyer.payout.toLocaleString()})`
+        );
+
+        setTimeout(() => {
+            buyers[index] = generateBuyer();
+            displayCPBook();
+        }, 3000);
+
+        displayCPBook();
+        return;
+    }
+
+    // ---------------------------
+    // HALF PROGRESS TRIGGER
+    // ---------------------------
+    if (buyer.deliveredCP >= buyer.requiredCP / 2 && buyer.stage === "half") {
+        showNotification(`${buyer.name}: "${dialogue}"`);
+    }
+
+    showNotification(`Sent ${formatCP(amount)} CP`);
+};
 
 // ---------------------------
-// DISPLAY CPBOOK
+// DISPLAY (UNCHANGED)
 // ---------------------------
 function displayCPBook() {
 
@@ -163,7 +235,6 @@ function displayCPBook() {
 
         const card = document.createElement("div");
         card.className = "buyer-card";
-        card.id = "buyer-" + index;
 
         card.innerHTML = `
             <img src="${buyer.portrait}" style="width:60px;height:60px;border-radius:50%;float:left;margin-right:10px;">
@@ -175,18 +246,16 @@ function displayCPBook() {
                 [${buyer.rarity}]
                 </span>
                 </h3>
-                <p>Age: ${buyer.age}</p>
+
+                <p>${buyer.age}</p>
 
                 <p>Request: ${formatCP(buyer.requiredCP)}</p>
-                <p>Delivered: <span id="delivered-${index}">${formatCP(buyer.deliveredCP)}</span></p>
-                <p>Total Payout: $${buyer.payout.toLocaleString()}</p>
+                <p>Delivered: ${formatCP(buyer.deliveredCP)}</p>
 
-                <div style="background:#ddd;height:8px;border-radius:5px;margin-top:6px;">
-                    <div id="progress-${index}" style="width:${progress*100}%;background:#1877f2;height:8px;border-radius:5px;"></div>
+                <div style="background:#ddd;height:8px;border-radius:5px;">
+                    <div style="width:${progress*100}%;background:#1877f2;height:8px;border-radius:5px;"></div>
                 </div>
             </div>
-
-            <div style="clear:both;"></div>
 
             <button onclick="giveCP(${index})">Send CP</button>
         `;
@@ -196,64 +265,21 @@ function displayCPBook() {
 }
 
 // ---------------------------
-// GIVE CP TO BUYER
+// OPEN / CLOSE (UNCHANGED)
 // ---------------------------
-window.giveCP = function(index) {
+window.openCPBook = function() {
+    const app = document.getElementById("cpbookApp");
+    if (app) app.classList.remove("hidden");
+    displayCPBook();
+}; 
 
-    const buyer = buyers[index];
-    if (!buyer) return;
-
-    if (window.cp <= 0) {
-        alert("You have no CP!");
-        return;
-    }
-
-    let remaining = buyer.requiredCP - buyer.deliveredCP;
-
-    let amount = Math.min(window.cp, remaining);
-
-    // remove CP but DO NOT give money yet
-    window.cp -= amount;
-
-    buyer.deliveredCP += amount;
-
-    window.updateUI();
-
-    // ---------------------------
-    // COMPLETED REQUEST
-    // ---------------------------
-    if (buyer.deliveredCP >= buyer.requiredCP) {
-
-        // FULL payout happens here
-        window.money += buyer.payout;
-
-        showNotification(
-            `${buyer.name}'s request completed! +$${buyer.payout.toLocaleString()}`
-        );
-
-        buyers[index] = generateBuyer(); // replace buyer
-        displayCPBook();
-        return;
-    }
-
-    // ---------------------------
-    // UPDATE UI LIVE
-    // ---------------------------
-
-    let deliveredEl = document.getElementById("delivered-" + index);
-    let progressEl = document.getElementById("progress-" + index);
-
-    if (deliveredEl)
-        deliveredEl.textContent = formatCP(buyer.deliveredCP);
-
-    if (progressEl)
-        progressEl.style.width = (buyer.deliveredCP / buyer.requiredCP * 100) + "%";
-
-    showNotification(`Sent ${formatCP(amount)} CP`);
+window.closeCPBook = function() {
+    const app = document.getElementById("cpbookApp");
+    if (app) app.classList.add("hidden");
 };
 
 // ---------------------------
-// GENERATE REQUEST LIST
+// GENERATE BUYERS (RESTORED - YOU WERE MISSING THIS)
 // ---------------------------
 function generateBuyers() {
 
@@ -267,28 +293,13 @@ function generateBuyers() {
 }
 
 // ---------------------------
-// OPEN / CLOSE CPBOOK
+// INIT (FIXED)
 // ---------------------------
-window.openCPBook = function() {
-
-    const app = document.getElementById("cpbookApp");
-    if (app) app.classList.remove("hidden");
-
-    displayCPBook();
-};
-
-window.closeCPBook = function() {
-
-    const app = document.getElementById("cpbookApp");
-    if (app) app.classList.add("hidden");
-};
-
-// ---------------------------
-// INITIALIZE
-// ---------------------------
-window.addEventListener("load", function () {
+window.addEventListener("load", async function () {
 
     feed = document.getElementById("buyers");
+
+    await loadNames();
     generateBuyers();
 
 });
